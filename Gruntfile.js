@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-
+        command: 'git push live server'
       }
     },
   });
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('server-dev', function (target) {
-    grunt.task.run([ 'nodemon', 'watch' ]);
+    grunt.task.run([ 'nodemon', 'watch', 'shell' ]);
   });
 
   grunt.registerTask('test', [

@@ -17,32 +17,25 @@
 // });
 
 // module.exports = Link;
-var db = require('../config');
+
 var mongoose = require('mongoose');
 var crypto = require('crypto'); 
 
-var LinkSchema = new mongoose.Schema({
-  tableName: { type: String },
-  hasTimestamps: Boolean,
-  visits: Number
+var linkSchema = mongoose.Schema({
+  url: String,
+  base_url: String,
+  code: String,
+  title: String,
+  visits: Number,
 });
 
+var Link = mongoose.model('Link', linkSchema);
 
-LinkSchema.methods.cryptofy = (url) => {
+linkSchema.pre('save', function() {
   var shasum = crpyto.createHash('sha1');
-  shasum.save((err) => {
-    if (err) {
-      console.log(err);
-    } 
-    shasum.update('url');
-    
-    
-
-
-  });
-};
-
-
-var Link = mongoose.model('url', LinkSchema);
-
+  shasum.update(this.url);
+  this.code = shasum.digest('hex').slice(0, 5);
+  next();
+});
+  
 module.exports = Link;
